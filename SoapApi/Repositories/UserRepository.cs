@@ -29,4 +29,30 @@ public class UserRepository : IUserRepository{
         
         return users.Select(user => user.ToModel()).ToList(); 
     }
+
+    public async Task DeleteByIdAsync(Guid Id, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task DeleteByIdAsync(UserModel user, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<UserModel> CreateAsync(UserModel user, CancellationToken cancellationToken)
+    {
+        user.Id=Guid.NewGuid();
+        await _dbContext.AddAsync(user.ToEntity(), cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return user;
+    }
+    public async Task<UserModel> UpdateAsync(UserModel user, CancellationToken cancellationToken)
+    {
+        
+        _dbContext.Users.Update(user.ToEntity());
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return user;
+    }
 }
+

@@ -3591,19 +3591,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\domin\\.nuget\\packages\\": {}
+    "C:\\Users\\User\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\domin\\OneDrive\\Documentos\\Uni\\SistemasDistribuidos\\SistemasDistribuidos_DominguezMorenoOsvaldo\\SoapApi\\SoapApi.csproj",
+      "projectUniqueName": "C:\\Users\\User\\OneDrive\\Documents\\distribuidos\\SistemasDistribiudosAlma\\SoapApi\\SoapApi.csproj",
       "projectName": "SoapApi",
-      "projectPath": "C:\\Users\\domin\\OneDrive\\Documentos\\Uni\\SistemasDistribuidos\\SistemasDistribuidos_DominguezMorenoOsvaldo\\SoapApi\\SoapApi.csproj",
-      "packagesPath": "C:\\Users\\domin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\domin\\OneDrive\\Documentos\\Uni\\SistemasDistribuidos\\SistemasDistribuidos_DominguezMorenoOsvaldo\\SoapApi\\obj\\",
+      "projectPath": "C:\\Users\\User\\OneDrive\\Documents\\distribuidos\\SistemasDistribiudosAlma\\SoapApi\\SoapApi.csproj",
+      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\User\\OneDrive\\Documents\\distribuidos\\SistemasDistribiudosAlma\\SoapApi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\domin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"

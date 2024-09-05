@@ -23,3 +23,9 @@ public interface IUserContract{
     [OperationContract]
     public Task<UserResponseDto> UpdateUser(UserUpdateRequestDto user, CancellationToken cancellationToken);
 }
+ [ServiceContract]
+    public interface IBookService
+    {
+        [OperationContract]
+        IList<BookResponseDto> GetBooksByName(string name);
+    }

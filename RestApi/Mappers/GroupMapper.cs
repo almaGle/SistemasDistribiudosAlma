@@ -24,13 +24,12 @@ public static class GroupMapper{
         };
     }
     public static GroupResponse ToDto(this GroupModel group)
+{
+    return new GroupResponse
     {
-        if (group == null) return null;
-        return new GroupResponse
-        {
-            Id = group.Id,
-            Name = group.Name,
-            CreationDate = group.CreationDate
-        };
-    }
+        Id = group.Id,
+        Name = group.Name,
+        CreationDate = group.CreationDate
+    };
+}
 }

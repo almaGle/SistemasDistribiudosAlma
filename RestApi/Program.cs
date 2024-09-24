@@ -1,48 +1,29 @@
 using MongoDB.Driver;
+using RestApi.Dtos;
 using RestApi.Repositories;
 using RestApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Agregar servicios al contenedor.
+// Add services to the container.
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
-    {
-        Title = "Groups API",
-        Version = "v1"
-    });
-});
-
 builder.Services.AddControllers();
-builder.Services.AddSingleton<IMongoClient, MongoClient>(s =>
-    new MongoClient(builder.Configuration.GetValue<string>("MongoDb:Groups:ConnectionString")));
+builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<IMongoClient, MongoClient>(s => new MongoClient(builder.Configuration.GetValue<string>("MongoDb:Groups:ConnectionString")));
 
 builder.Services.AddScoped<IGroupService, GroupService>();
 builder.Services.AddScoped<IGroupRepository, GroupRepository>();
-
-// Configurar CORS
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll",
-        builder => builder
-            .AllowAnyOrigin() // Permitir cualquier origen
-            .AllowAnyMethod()
-            .AllowAnyHeader());
-});
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
-// Usar CORS
-app.UseCors("AllowAll");
-
-// Configurar Swagger y Swagger UI
-app.UseSwagger();
-app.UseSwaggerUI(c =>
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Groups API v1");
-});
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseHttpsRedirection();
 app.MapControllers();

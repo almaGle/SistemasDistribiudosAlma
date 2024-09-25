@@ -1,0 +1,10 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\SoapApi",
+    "\\SoapApi\\Infraestructure",
+    "\\SoapApi\\Infraestructure\\Entities"
+  ],
+  "SelectedNode": "\\SoapApi\\Program.cs",
+  "PreviewInSolutionExplorer": false
+}

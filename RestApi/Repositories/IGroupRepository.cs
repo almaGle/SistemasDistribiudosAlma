@@ -13,6 +13,11 @@ public interface IGroupRepository
         int pageSize, 
         string orderBy, 
         CancellationToken cancellationToken);
+
+        Task DeleteByIdAsync (string id, CancellationToken cancellationToken);
+        Task <GroupModel> CreateAsync(string name, Guid[] users, CancellationToken cancellationToken);
+}
+
 }
 
 public interface IGroupRepository{
@@ -20,4 +25,5 @@ public interface IGroupRepository{
     Task<List<GroupModel>> FindGroupsByNameAsync(string name, CancellationToken cancellationToken);
 
 }
+
 

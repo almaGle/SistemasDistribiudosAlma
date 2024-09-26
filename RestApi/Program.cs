@@ -1,8 +1,5 @@
 using MongoDB.Driver;
-
 using RestApi.Dtos;
-
-
 using RestApi.Repositories;
 using RestApi.Services;
 
@@ -31,4 +28,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.MapControllers();
+
 app.Run();
+

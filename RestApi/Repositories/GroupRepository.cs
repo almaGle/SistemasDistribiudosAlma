@@ -4,6 +4,7 @@ using RestApi.Mappers;
 using RestApi.Models;
 using MongoDB.Bson;
 
+}
 namespace RestApi.Repositories
 {
     public class GroupRepository : IGroupRepository

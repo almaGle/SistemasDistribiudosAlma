@@ -1,0 +1,138 @@
+# Compiled object files
+*.o
+*.a
+*.so
+*.dll
+*.dylib
+*.exe
+
+# Directories for build output
+bin/
+obj/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Mono auto generated files
+mono_crash.*
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+packages/
+# Uncomment if necessary however generally it will be regenerated when needed
+#!**/packages/*/build/
+#!**/packages/*/tools/
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Mac system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows Explorer Thumbnail Cache
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Windows shortcuts
+*.lnk
+
+# Rider project files
+.idea/
+*.sln.iml
+
+# Visual Studio Code files
+.vscode/
+
+# JetBrains Rider
+.idea/
+
+# Coverlet coverage output
+coverage.opencover.xml
+coverage.cobertura.xml
+
+# .NET specific
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# StyleCop
+StyleCopReport.xml
+Chatp2p/
+
+# Build Folders (Objective-C)
+build/
+[Bb]in/
+[Oo]bj/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Mono Auto Generated Files
+mono_crash.*
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# VS Code files
+.vscode/
+.vscode/*
+
+# DotNet files
+*.pidb
+*.svd
+*.userprefs
+*.user
+*.userprefs
+*.dotsettings
+*.editorconfig
+*.icls
+*.nupkg
+*.nuspec
+*.ps1
+*.psm1
+*.psd1
+*.ps1xml
+*.pyc
+*.pyo
+*.suo
+*.tmp
+*.vsix
+*.vsixmanifest
+
+# Proyectos anteriores
+ChatP2P/
+FileDownload/
+HelloWorld/
+HelloWorldGo/
+SoapApi/

@@ -24,6 +24,16 @@ public static class GroupMapper{
         };
     }
     public static GroupResponse ToDto(this GroupModel group)
+
+{
+    return new GroupResponse
+    {
+        Id = group.Id,
+        Name = group.Name,
+        CreationDate = group.CreationDate
+    };
+}
+
     {
         if (group == null) return null;
         return new GroupResponse
@@ -33,4 +43,5 @@ public static class GroupMapper{
             CreationDate = group.CreationDate
         };
     }
+
 }

@@ -10,7 +10,9 @@ namespace RestApi.Repositories
     public class GroupRepository : IGroupRepository
     {
         private readonly IMongoCollection<GroupEntity> _groups;
+        
 
+    
         public GroupRepository(IMongoClient mongoClient, IConfiguration configuration)
         {
             var database = mongoClient.GetDatabase(configuration.GetValue<string>("MongoDb:Groups:DatabaseName"));
@@ -81,5 +83,11 @@ namespace RestApi.Repositories
 
     return groups.Select(g => g.ToModel()).ToList(); 
 }
+        public async Task<GroupModel> GetGroupByExactNameAsync(string name, CancellationToken cancellationToken)
+        {
+            var filter = Builders<GroupEntity>.Filter.Eq(x => x.Name, name); // Búsqueda exacta por nombre
+            var group = await _groups.Find(filter).FirstOrDefaultAsync(cancellationToken);
+            return group?.ToModel();
+        }
     }
     }

@@ -70,7 +70,7 @@ public class GroupService : IGroupService
             throw new InvalidGroupRequestFormatException();
         }
         var groups = await _groupRepository.GetByIdAsync( name, cancellationToken);
-        if (groups.Any()){
+        if (groups is not null){
             throw new GroupAlreadyExistsException();
         }
         var group = await _groupRepository.CreateAsync( name, users, cancellationToken);
@@ -85,4 +85,8 @@ public class GroupService : IGroupService
                         .ToList()
         };
     }
+    public async Task<GroupModel> GetGroupByExactNameAsync(string name, CancellationToken cancellationToken)
+{
+    return await _groupRepository.GetGroupByExactNameAsync(name, cancellationToken);
+}
 }

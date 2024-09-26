@@ -3,10 +3,12 @@ using RestApi.Infrastructure.Mongo;
 using RestApi.Mappers;
 using RestApi.Models;
 using MongoDB.Bson;
+
 using System.Text.RegularExpressions;
 
-namespace RestApi.Repositories
-{
+
+namespace RestApi.Repositories;
+
     public class GroupRepository : IGroupRepository
     {
         private readonly IMongoCollection<GroupEntity> _groups;
@@ -16,6 +18,7 @@ namespace RestApi.Repositories
             var database = mongoClient.GetDatabase(configuration.GetValue<string>("MongoDb:Groups:DatabaseName"));
             _groups = database.GetCollection<GroupEntity>(configuration.GetValue<string>("MongoDb:Groups:CollectionName"));
         }
+
 
         public async Task<GroupModel> CreateAsync(string name, Guid[] users, CancellationToken cancellationToken)
         {
@@ -34,6 +37,7 @@ namespace RestApi.Repositories
             var filter =Builders<GroupEntity>.Filter.Eq(s => s.Id, id);
             await _groups.DeleteOneAsync(filter, cancellationToken);
         }
+
 
         public async Task<GroupModel> GetByIdAsync(string Id, CancellationToken cancellationToken)
         {

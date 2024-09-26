@@ -1,9 +1,15 @@
+
+using Microsoft.AspNetCore.Http.HttpResults;
+
+
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Dtos;
 using RestApi.Services;
 using RestApi.Mappers;
+
 using RestApi.Exceptions;
 using System.Net;
+
 
 namespace RestApi.Controllers;
 
@@ -12,7 +18,7 @@ namespace RestApi.Controllers;
 public class GroupsController : ControllerBase
 {
     private readonly IGroupService _groupService;
-    
+
     public GroupsController(IGroupService groupService)
     {
         _groupService = groupService;
@@ -22,12 +28,17 @@ public class GroupsController : ControllerBase
     public async Task<ActionResult<GroupResponse>> GetGroupById(string id, CancellationToken cancellationToken)
     {
         var group = await _groupService.GetGroupByIdAsync(id, cancellationToken);
-        if (group is null)
+
+
+        if(group is null)
+
+
         {
             return NotFound();
         }
         return Ok(group.ToDto());
     }
+
 
    [HttpGet]
 public async Task<ActionResult<IEnumerable<GroupResponse>>> GetGroupsByName(
@@ -48,6 +59,7 @@ public async Task<ActionResult<IEnumerable<GroupResponse>>> GetGroupsByName(
     
     return Ok(groupResponses);
 }
+
 [HttpDelete("id")]
 
 public async Task<IActionResult> DeleteGroup(string id, CancellationToken cancellationToken)
@@ -87,5 +99,22 @@ public async Task<ActionResult<GroupResponse>> CreateGroup([FromBody]CreateGroup
         Errors = errors
     };
  }
+
+
+
+}
+
+    [HttpGet]
+public async Task<ActionResult<List<GroupResponse>>> GetGroupsByName([FromQuery] string name, CancellationToken cancellationToken)
+{
+    var groups = await _groupService.GetGroupsByNameAsync(name, cancellationToken);
+    
+    if(groups == null || groups.Count == 0)
+    {
+        return Ok(new List<GroupResponse>());  // Si no se encontraron coincidencias, retorna una lista vacía
+    }
+    
+    return Ok(groups.Select(group => group.ToDto()).ToList());
+}
 
 }

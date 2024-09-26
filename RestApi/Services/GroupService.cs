@@ -1,9 +1,13 @@
+
 using Microsoft.Extensions.Configuration.UserSecrets;
 using RestApi.Models;
 using RestApi.Repositories;
 using RestApi.Exceptions;
-
 namespace RestApi.Services;
+using Microsoft.Extensions.Configuration.UserSecrets;
+using RestApi.Models;
+using RestApi.Repositories;
+
 public class GroupService : IGroupService
 {
     private readonly IGroupRepository _groupRepository;
@@ -85,4 +89,5 @@ public class GroupService : IGroupService
                         .ToList()
         };
     }
+
 }

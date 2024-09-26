@@ -34,6 +34,7 @@ public static class GroupMapper{
     };
 }
 
+
     {
         if (group == null) return null;
         return new GroupResponse
@@ -43,5 +44,6 @@ public static class GroupMapper{
             CreationDate = group.CreationDate
         };
     }
+
 
 }

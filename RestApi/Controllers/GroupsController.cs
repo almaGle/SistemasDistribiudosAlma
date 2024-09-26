@@ -11,6 +11,10 @@ using RestApi.Exceptions;
 using System.Net;
 
 
+
+using RestApi.Exceptions;
+using System.Net;
+
 namespace RestApi.Controllers;
 
 [ApiController]
@@ -31,6 +35,7 @@ public class GroupsController : ControllerBase
 
 
         if(group is null)
+
 
 
         {

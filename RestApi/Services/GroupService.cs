@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration.UserSecrets;
 using RestApi.Models;
 using RestApi.Repositories;
+using RestApi.Exceptions;
 
 namespace RestApi.Services;
 public class GroupService : IGroupService
@@ -51,5 +52,37 @@ public class GroupService : IGroupService
         CancellationToken cancellationToken)
     {
         return await _groupRepository.GetGroupsByNameAsync(name, pageIndex, pageSize, orderBy, cancellationToken);
+    }
+
+    public async Task DeleteGroupByIdAsync(string id, CancellationToken cancellationToken)
+    {
+        var group =await _groupRepository.GetByIdAsync(id, cancellationToken);
+        if (group is null){
+            throw new GroupNotFoundException();
+
+        }
+        await _groupRepository.DeleteByIdAsync(id, cancellationToken);
+    }
+
+    public async Task<GroupUserModel> CreateGroupAsync(string name, Guid[] users, CancellationToken cancellationToken)
+    {
+        if (users.Length == 0){
+            throw new InvalidGroupRequestFormatException();
+        }
+        var groups = await _groupRepository.GetByIdAsync( name, cancellationToken);
+        if (groups.Any()){
+            throw new GroupAlreadyExistsException();
+        }
+        var group = await _groupRepository.CreateAsync( name, users, cancellationToken);
+         return new GroupUserModel
+        {
+            Id = group.Id,
+            Name = group.Name,
+            CreationDate = group.CreationDate,
+            Users = (await Task.WhenAll(
+                group.Users.Select(userId => _userRepository.GetByIdAsync(
+                    userId, cancellationToken)))).Where(userModel => userModel != null)
+                        .ToList()
+        };
     }
 }

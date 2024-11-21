@@ -4,11 +4,13 @@ using RestApi.Services;
 using RestApi.Mappers;
 using RestApi.Exceptions;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RestApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class GroupsController : ControllerBase
 {
     private readonly IGroupService _groupService;
@@ -19,6 +21,7 @@ public class GroupsController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    
     public async Task<ActionResult<GroupResponse>> GetGroupById(string id, CancellationToken cancellationToken)
     {
         var group = await _groupService.GetGroupByIdAsync(id, cancellationToken);
@@ -87,5 +90,23 @@ public async Task<ActionResult<GroupResponse>> CreateGroup([FromBody]CreateGroup
         Errors = errors
     };
  }
+
+ [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateGroup(string id, [FromBody] UpdateGroupRequest groupRequest, CancellationToken cancellationToken){
+        try{
+            await _groupService.UpdateGroupAsync(id, groupRequest.Name, groupRequest.Users, cancellationToken);
+            return NoContent(); 
+        }catch(GroupNotFoundException){
+            return NotFound();
+        }catch(InvalidGroupRequestFormatException){
+            return BadRequest(NewValidationProblemDetails("One or more validation errors occured.", HttpStatusCode.BadRequest, new Dictionary<string, string[]>{
+                {"Groups", ["Users array is empy"]}
+            }));
+        }catch(GroupAlreadyExistsException){
+            return Conflict(NewValidationProblemDetails("One or more validation errors occured.", HttpStatusCode.Conflict, new Dictionary<string, string[]>{
+                {"Groups", ["Group with same name already exists"]}
+            }));
+        }
+    }
 
 }

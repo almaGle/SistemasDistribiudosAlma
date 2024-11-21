@@ -89,4 +89,20 @@ public class GroupService : IGroupService
 {
     return await _groupRepository.GetGroupByExactNameAsync(name, cancellationToken);
 }
+public async Task UpdateGroupAsync(string id, string name, Guid[] users, CancellationToken cancellationToken){
+        if (users.Length == 0){
+            throw new InvalidGroupRequestFormatException();
+        }
+        var group = await _groupRepository.GetByIdAsync(id, cancellationToken);
+        if (group is null){
+            throw new GroupNotFoundException();
+            }
+        
+        var groups = await _groupRepository.GetGroupByExactNameAsync(name, cancellationToken);
+        if (groups is not null && groups.Id != id){
+            throw new GroupAlreadyExistsException();
+        }
+        await _groupRepository.UpdateGroupAsync(id, name, users, cancellationToken);
+}
+
 }

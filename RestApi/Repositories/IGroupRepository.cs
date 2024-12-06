@@ -16,14 +16,9 @@ public interface IGroupRepository
 
         Task DeleteByIdAsync (string id, CancellationToken cancellationToken);
         Task <GroupModel> CreateAsync(string name, Guid[] users, CancellationToken cancellationToken);
-}
+
+        Task<GroupModel> GetGroupByExactNameAsync(string name, CancellationToken cancellationToken);
+
+        Task UpdateGroupAsync(string id, string name, Guid[] users, CancellationToken cancellationToken);
 
 }
-
-public interface IGroupRepository{
-    Task<GroupModel> GetByIdAsync(string Id, CancellationToken cancellationToken);
-    Task<List<GroupModel>> FindGroupsByNameAsync(string name, CancellationToken cancellationToken);
-
-}
-
-

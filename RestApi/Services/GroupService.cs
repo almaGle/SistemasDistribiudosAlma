@@ -4,9 +4,6 @@ using RestApi.Models;
 using RestApi.Repositories;
 using RestApi.Exceptions;
 namespace RestApi.Services;
-using Microsoft.Extensions.Configuration.UserSecrets;
-using RestApi.Models;
-using RestApi.Repositories;
 
 public class GroupService : IGroupService
 {
@@ -74,7 +71,9 @@ public class GroupService : IGroupService
             throw new InvalidGroupRequestFormatException();
         }
         var groups = await _groupRepository.GetByIdAsync( name, cancellationToken);
-        if (groups.Any()){
+
+        if (groups is not null){
+
             throw new GroupAlreadyExistsException();
         }
         var group = await _groupRepository.CreateAsync( name, users, cancellationToken);
@@ -89,5 +88,26 @@ public class GroupService : IGroupService
                         .ToList()
         };
     }
+
+    public async Task<GroupModel> GetGroupByExactNameAsync(string name, CancellationToken cancellationToken)
+{
+    return await _groupRepository.GetGroupByExactNameAsync(name, cancellationToken);
+}
+public async Task UpdateGroupAsync(string id, string name, Guid[] users, CancellationToken cancellationToken){
+        if (users.Length == 0){
+            throw new InvalidGroupRequestFormatException();
+        }
+        var group = await _groupRepository.GetByIdAsync(id, cancellationToken);
+        if (group is null){
+            throw new GroupNotFoundException();
+            }
+        
+        var groups = await _groupRepository.GetGroupByExactNameAsync(name, cancellationToken);
+        if (groups is not null && groups.Id != id){
+            throw new GroupAlreadyExistsException();
+        }
+        await _groupRepository.UpdateGroupAsync(id, name, users, cancellationToken);
+}
+
 
 }

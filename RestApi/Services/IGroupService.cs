@@ -11,13 +11,9 @@ public interface IGroupService
 
     Task DeleteGroupByIdAsync(string id, CancellationToken cancellationToken);
     Task <GroupUserModel> CreateGroupAsync(string name, Guid[] users, CancellationToken cancellationToken);
+    Task<GroupModel> GetGroupByExactNameAsync(string name, CancellationToken cancellationToken);
 
-}
+    Task UpdateGroupAsync( string id, string name, Guid[] users, CancellationToken cancellationToken);
 
-public interface IGroupService{
-    Task<GroupUserModel> GetGroupByIdAsync (string Id, CancellationToken cancellationToken);
-
-    Task<List<GroupModel>> GetGroupsByNameAsync(string name, CancellationToken cancellationToken);
-}
 
 }

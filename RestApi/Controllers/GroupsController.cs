@@ -1,6 +1,6 @@
 
-using Microsoft.AspNetCore.Http.HttpResults;
 
+using Microsoft.AspNetCore.Http.HttpResults;
 
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Dtos;
@@ -15,6 +15,12 @@ namespace RestApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+
+[Authorize]
+public class GroupsController : ControllerBase
+{
+    private readonly IGroupService _groupService;
+    
 public class GroupsController : ControllerBase
 {
     private readonly IGroupService _groupService;
@@ -25,13 +31,13 @@ public class GroupsController : ControllerBase
     }
 
     [HttpGet("{id}")]
+
+    [Authorize(Policy="Read")]
+    
     public async Task<ActionResult<GroupResponse>> GetGroupById(string id, CancellationToken cancellationToken)
     {
         var group = await _groupService.GetGroupByIdAsync(id, cancellationToken);
-
-
-        if(group is null)
-
+        if (group is null)
 
         {
             return NotFound();
@@ -39,8 +45,9 @@ public class GroupsController : ControllerBase
         return Ok(group.ToDto());
     }
 
+   [HttpGet]   
+   [Authorize(Policy="Read")]
 
-   [HttpGet]
 public async Task<ActionResult<IEnumerable<GroupResponse>>> GetGroupsByName(
     [FromQuery] string name, 
     [FromQuery] int pageIndex = 1, 
@@ -59,8 +66,9 @@ public async Task<ActionResult<IEnumerable<GroupResponse>>> GetGroupsByName(
     
     return Ok(groupResponses);
 }
-
 [HttpDelete("id")]
+[Authorize(Policy="Write")]
+
 
 public async Task<IActionResult> DeleteGroup(string id, CancellationToken cancellationToken)
 {
@@ -73,6 +81,9 @@ public async Task<IActionResult> DeleteGroup(string id, CancellationToken cancel
     }
 }
 [HttpPost]
+
+[Authorize(Policy="Write")]
+
 public async Task<ActionResult<GroupResponse>> CreateGroup([FromBody]CreateGroupRequest groupRequest,
  CancellationToken cancellationToken){
     try{
@@ -101,6 +112,27 @@ public async Task<ActionResult<GroupResponse>> CreateGroup([FromBody]CreateGroup
  }
 
 
+ [HttpPut("{id}")]
+ [Authorize(Policy="Write")]
+
+    public async Task<IActionResult> UpdateGroup(string id, [FromBody] UpdateGroupRequest groupRequest, CancellationToken cancellationToken){
+        try{
+            await _groupService.UpdateGroupAsync(id, groupRequest.Name, groupRequest.Users, cancellationToken);
+            return NoContent(); 
+        }catch(GroupNotFoundException){
+            return NotFound();
+        }catch(InvalidGroupRequestFormatException){
+            return BadRequest(NewValidationProblemDetails("One or more validation errors occured.", HttpStatusCode.BadRequest, new Dictionary<string, string[]>{
+                {"Groups", ["Users array is empy"]}
+            }));
+        }catch(GroupAlreadyExistsException){
+            return Conflict(NewValidationProblemDetails("One or more validation errors occured.", HttpStatusCode.Conflict, new Dictionary<string, string[]>{
+                {"Groups", ["Group with same name already exists"]}
+            }));
+        }
+    }
+
+
 
 }
 
@@ -116,5 +148,6 @@ public async Task<ActionResult<List<GroupResponse>>> GetGroupsByName([FromQuery]
     
     return Ok(groups.Select(group => group.ToDto()).ToList());
 }
+
 
 }

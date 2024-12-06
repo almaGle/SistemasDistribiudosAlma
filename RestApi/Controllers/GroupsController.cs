@@ -1,32 +1,44 @@
+
+
+using Microsoft.AspNetCore.Http.HttpResults;
+
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Dtos;
 using RestApi.Services;
 using RestApi.Mappers;
+
 using RestApi.Exceptions;
 using System.Net;
-using Microsoft.AspNetCore.Authorization;
+
 
 namespace RestApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+
 [Authorize]
 public class GroupsController : ControllerBase
 {
     private readonly IGroupService _groupService;
     
+public class GroupsController : ControllerBase
+{
+    private readonly IGroupService _groupService;
+
     public GroupsController(IGroupService groupService)
     {
         _groupService = groupService;
     }
 
     [HttpGet("{id}")]
+
     [Authorize(Policy="Read")]
     
     public async Task<ActionResult<GroupResponse>> GetGroupById(string id, CancellationToken cancellationToken)
     {
         var group = await _groupService.GetGroupByIdAsync(id, cancellationToken);
         if (group is null)
+
         {
             return NotFound();
         }
@@ -57,6 +69,7 @@ public async Task<ActionResult<IEnumerable<GroupResponse>>> GetGroupsByName(
 [HttpDelete("id")]
 [Authorize(Policy="Write")]
 
+
 public async Task<IActionResult> DeleteGroup(string id, CancellationToken cancellationToken)
 {
     try{
@@ -68,6 +81,7 @@ public async Task<IActionResult> DeleteGroup(string id, CancellationToken cancel
     }
 }
 [HttpPost]
+
 [Authorize(Policy="Write")]
 
 public async Task<ActionResult<GroupResponse>> CreateGroup([FromBody]CreateGroupRequest groupRequest,
@@ -97,6 +111,7 @@ public async Task<ActionResult<GroupResponse>> CreateGroup([FromBody]CreateGroup
     };
  }
 
+
  [HttpPut("{id}")]
  [Authorize(Policy="Write")]
 
@@ -116,5 +131,23 @@ public async Task<ActionResult<GroupResponse>> CreateGroup([FromBody]CreateGroup
             }));
         }
     }
+
+
+
+}
+
+    [HttpGet]
+public async Task<ActionResult<List<GroupResponse>>> GetGroupsByName([FromQuery] string name, CancellationToken cancellationToken)
+{
+    var groups = await _groupService.GetGroupsByNameAsync(name, cancellationToken);
+    
+    if(groups == null || groups.Count == 0)
+    {
+        return Ok(new List<GroupResponse>());  // Si no se encontraron coincidencias, retorna una lista vacía
+    }
+    
+    return Ok(groups.Select(group => group.ToDto()).ToList());
+}
+
 
 }

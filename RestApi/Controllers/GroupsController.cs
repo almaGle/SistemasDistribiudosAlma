@@ -21,6 +21,7 @@ public class GroupsController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize(Policy="Read")]
     
     public async Task<ActionResult<GroupResponse>> GetGroupById(string id, CancellationToken cancellationToken)
     {
@@ -32,7 +33,9 @@ public class GroupsController : ControllerBase
         return Ok(group.ToDto());
     }
 
-   [HttpGet]
+   [HttpGet]   
+   [Authorize(Policy="Read")]
+
 public async Task<ActionResult<IEnumerable<GroupResponse>>> GetGroupsByName(
     [FromQuery] string name, 
     [FromQuery] int pageIndex = 1, 
@@ -52,6 +55,7 @@ public async Task<ActionResult<IEnumerable<GroupResponse>>> GetGroupsByName(
     return Ok(groupResponses);
 }
 [HttpDelete("id")]
+[Authorize(Policy="Write")]
 
 public async Task<IActionResult> DeleteGroup(string id, CancellationToken cancellationToken)
 {
@@ -64,6 +68,8 @@ public async Task<IActionResult> DeleteGroup(string id, CancellationToken cancel
     }
 }
 [HttpPost]
+[Authorize(Policy="Write")]
+
 public async Task<ActionResult<GroupResponse>> CreateGroup([FromBody]CreateGroupRequest groupRequest,
  CancellationToken cancellationToken){
     try{
@@ -92,6 +98,8 @@ public async Task<ActionResult<GroupResponse>> CreateGroup([FromBody]CreateGroup
  }
 
  [HttpPut("{id}")]
+ [Authorize(Policy="Write")]
+
     public async Task<IActionResult> UpdateGroup(string id, [FromBody] UpdateGroupRequest groupRequest, CancellationToken cancellationToken){
         try{
             await _groupService.UpdateGroupAsync(id, groupRequest.Name, groupRequest.Users, cancellationToken);
